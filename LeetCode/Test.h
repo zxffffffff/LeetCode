@@ -31,4 +31,5 @@ public:
 	void Characters();
 	void HashTable();
 	void Tree();
+	void Dynamic();
 };

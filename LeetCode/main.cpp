@@ -3,12 +3,19 @@
 
 #include "pch.h"
 #include "Test.h"
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 int main()
 {
+	std::cout << "Hello World!\n";
+
 	Test t;
-	//std::cout << "Hello World!\n"; 
-	//system("PAUSE");
+
+#ifdef _WIN32
+	system("PAUSE");
+#endif
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

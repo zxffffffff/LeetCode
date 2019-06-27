@@ -929,23 +929,36 @@ bool queryString(string S, int N) {
 输入的字符串长度不会超过1000。
 */
 int countSubstrings(string s) {
-	auto check = [&s](int l, int r) {
-		return true;
-	};
+	//LeetCode一种解法，动态规划很厉害
 
-	int ret = 0;
-	for (int i = 0; i < s.size(); i++) {
-		ret++;
-
+	int m = s.size();
+	vector<vector<int>>dp(m, vector<int>(m, 0));
+	for (int i = 0; i < m; i++)
+		dp[i][i] = 1;
+	//从后往前计算，可以先得出dp[i+1][j-1]的值，
+	//不需要重复计算
+	for (int i = m - 2; i >= 0; i--)
+	{
+		for (int j = i + 1; j < m; j++)
+		{
+			//两个元素相邻
+			if (j - i == 1)
+				dp[i][j] = s[i] == s[j];
+			else
+				//至少i和j之间三个元素
+				dp[i][j] = dp[i + 1][j - 1] && (s[i] == s[j]);
+		}
 	}
-
-	return 0;
+	int count = 0;
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			if (dp[i][j]) count++;
+		}
+	}
+	return count;
 }
-
-void Test::Characters()
-{
-}
-
 
 
 /* 520. 检测大写字母
@@ -969,14 +982,38 @@ void Test::Characters()
 注意: 输入是由大写和小写拉丁字母组成的非空单词。
 */
 bool detectCapitalUse(string word) {
+	int uppercase = 0;
+	for(int i=0; i<word.length(); i++)
+	{
+		auto c = word[i];
+		if (c >= 'A' && c <= 'Z') {
+			if (i == 0) {
+				uppercase++;
+			}
+			else if (uppercase == i) {
+				uppercase++;
+			}
+			else {
+				return false;
+			}
+		}
+		else if (c >= 'a' &&c <= 'z') {
+			if (uppercase == i && i > 1)
+				return false;
+		}
+	}
 	return true;
 }
+
+
 
 
 /* 553. 最优除法
 给定一组正整数，相邻的整数之间将会进行浮点除法操作。例如， [2,3,4] -> 2 / 3 / 4 。
 
-但是，你可以在任意位置添加任意数目的括号，来改变算数的优先级。你需要找出怎么添加括号，才能得到最大的结果，并且返回相应的字符串格式的表达式。你的表达式不应该含有冗余的括号。
+但是，你可以在任意位置添加任意数目的括号，来改变算数的优先级。
+你需要找出怎么添加括号，才能得到最大的结果，并且返回相应的字符串格式的表达式。
+你的表达式不应该含有冗余的括号。
 
 示例：
 
@@ -999,7 +1036,27 @@ bool detectCapitalUse(string word) {
 每个测试用例只有一个最优除法解。
 */
 string optimalDivision(vector<int>& nums) {
-	return string();
+	/*
+	一组括号把从第二个数开始的所有数括起来就好了 66666
+	*/
+
+	string out;
+	const int sz = nums.size();
+	if (sz == 0)
+		return out;
+
+	out = to_string(nums[sz - 1]);
+	if (sz == 1)
+		return out;
+
+	for (int i = sz - 2; i >= 0; i--)
+	{
+		if (i == 1)
+			out = '(' + to_string(nums[i]) + '/' + out + ')';
+		else
+			out = to_string(nums[i]) + '/' + out;
+	}
+	return out;
 }
 
 
@@ -1008,7 +1065,9 @@ string optimalDivision(vector<int>& nums) {
 
 0 的数量与 1 的数量相等。
 二进制序列的每一个前缀码中 1 的数量要大于等于 0 的数量。
-给定一个特殊的二进制序列 S，以字符串形式表示。定义一个操作 为首先选择 S 的两个连续且非空的特殊的子串，然后将它们交换。（两个子串为连续的当且仅当第一个子串的最后一个字符恰好为第二个子串的第一个字符的前一个字符。)
+给定一个特殊的二进制序列 S，以字符串形式表示。
+定义一个操作 为首先选择 S 的两个连续且非空的特殊的子串，然后将它们交换。
+（两个子串为连续的当且仅当第一个子串的最后一个字符恰好为第二个子串的第一个字符的前一个字符。)
 
 在任意次数的操作之后，交换后的字符串按照字典序排列的最大的结果是什么？
 
@@ -1025,8 +1084,84 @@ S 的长度不超过 50。
 S 保证为一个满足上述定义的特殊 的二进制序列。
 */
 string makeLargestSpecial(string S) {
+	//结果不对？？？
+	/*
+	auto generate = [](vector<pair<string, int>> &vc, int &zero, int &one) {
+		string s0, s1;
+
+		if (zero < one) {
+			while (zero < one--)
+				s1 += '1';
+			one++;
+			pair<string, int> pr(s1, INT_MAX);
+			vc.push_back(pr);
+			s1.clear();
+		}
+
+		if (0 < one) {
+			while (0 < one) {
+				s0 += '0'; one--;
+				s1 += '1'; zero--;
+			}
+			pair<string, int> pr(s1 + s0, s1.length());
+			vc.push_back(pr);
+		}
+
+		if (0 < zero) {
+			s0.clear();
+			while (0 < zero--)
+				s0 += '0';
+			pair<string, int> pr(s0, 0);
+			vc.push_back(pr);
+		}
+
+		one = zero = 0;
+		return vc;
+	};
+
+	//拆分到vector
+	vector<pair<string, int>> vc;
+	int zero = 0, one = 0;
+	for (auto c : S) {
+		if (c == '1')
+		{
+			if (zero != 0)
+			{
+				generate(vc, zero, one);
+			}
+			one++;
+		}
+		else // c == '0'
+		{
+			zero++;
+		}
+	}
+	generate(vc, zero, one);
+
+	//冒泡交换
+	for (int i = 0; i < vc.size(); i++) {
+		if(vc[i].second == 0)
+			continue;
+		for (int j = i + 1; j < vc.size(); j++) {
+			if(vc[j].second == 0)
+				continue;;
+			if (vc[i].second < vc[j].second)
+				swap(vc[i], vc[j]);
+		}
+	}
+
+	//合并
+	string s;
+	for (int i = 0; i < vc.size(); i++)
+		s += vc[i].first;
+
+	return s;
+	*/
 	return string();
 }
+
+
+
 
 
 /* 856. 括号的分数
@@ -1037,32 +1172,43 @@ AB 得 A + B 分，其中 A 和 B 是平衡括号字符串。
 (A) 得 2 * A 分，其中 A 是平衡括号字符串。
 
 
-示例 1：
-
 输入： "()"
 输出： 1
-示例 2：
 
 输入： "(())"
 输出： 2
-示例 3：
 
 输入： "()()"
 输出： 2
-示例 4：
 
 输入： "(()(()))"
 输出： 6
 
 
 提示：
-
 S 是平衡括号字符串，且只含有 ( 和 ) 。
 2 <= S.length <= 50
 */
 int scoreOfParentheses(string S) {
-	return 0;
+	//将 (()(())) 拆成 (()) + ((()))
+	int deep = 0, score = 0;
+	for (int i = 0; i < S.size(); i++) {
+		if (S[i] == '(') {
+			deep++;
+		}
+		else {
+			deep--;
+			if (S[i - 1] == '(') {
+				score += 1 << deep;
+			}
+		}
+	}
+	return score;
 }
+
+
+
+
 
 
 /* 937. 重新排列日志文件
@@ -1074,7 +1220,8 @@ int scoreOfParentheses(string S) {
 标识符后面的每个字将仅由数字组成。
 我们将这两种日志分别称为字母日志和数字日志。保证每个日志在其标识符后面至少有一个字。
 
-将日志重新排序，使得所有字母日志都排在数字日志之前。字母日志按字母顺序排序，忽略标识符，标识符仅用于表示关系。数字日志应该按原来的顺序排列。
+将日志重新排序，使得所有字母日志都排在数字日志之前。字母日志按字母顺序排序，
+忽略标识符，标识符仅用于表示关系。数字日志应该按原来的顺序排列。
 
 返回日志的最终顺序。
 
@@ -1093,9 +1240,45 @@ int scoreOfParentheses(string S) {
 logs[i] 保证有一个标识符，并且标识符后面有一个字。
 */
 vector<string> reorderLogFiles(vector<string>& logs) {
-	return vector<string>();
+	auto isWord = [](const string &s) {
+		int idx = s.find(' ') + 1;
+		return (s[idx] >= 'a' && s[idx] <= 'z');
+	};
+
+	if (logs.size() <= 1)
+		return logs;
+
+	//将字母log取出来
+	vector<string> logWord;
+	for (int i = 0; i < logs.size(); i++) {
+		if (isWord(logs[i])) {
+			logWord.push_back(logs[i]);
+			logs[i].clear();
+		}
+	}
+	//对字母log排序
+	sort(logWord.begin(), logWord.end(), [](string s1, string s2) {
+		auto ite1 = find(s1.begin(), s1.end(), ' ');
+		auto ite2 = find(s2.begin(), s2.end(), ' ');
+		int ret = string(ite1, s1.end()).compare(string(ite2, s2.end())) < 0;
+		if (ret == 0)
+			ret = s1.compare(s2);
+		return ret < 0;
+		});
+	//合并logs过来
+	for (auto log : logs) {
+		if(log.empty())
+			continue;
+		logWord.push_back(log);
+	}
+	return logWord;
 }
 
+void Test::Characters()
+{
+	vector<string> logs = {"a1 9 2 3 1","g1 act car","zo4 4 7","ab1 off key dog","a8 act zoo","a2 act car"};
+	logs = reorderLogFiles(logs);
+}
 
 //////////////////////////////////////// 50%
 

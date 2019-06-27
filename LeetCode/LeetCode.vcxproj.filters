@@ -26,9 +26,6 @@
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="LeetCode.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -45,6 +42,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Tree.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicProgramming.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

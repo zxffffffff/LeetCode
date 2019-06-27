@@ -239,35 +239,83 @@ Node* connect(Node* root)
 		}
 		task.swap(taskTmp);
 		
-#if 0
-		//第三次到这里时 task.size() = 0 但是依然进入了循环，导致崩溃
-		for (int i = 0; i < task.size() - 1; i++)
-			task[i]->next = task[i + 1];
-#else
-		//这样就正常了
 		int sz = task.size();
 		for (int i = 0; i < sz - 1; i++)
 			task[i]->next = task[i + 1];
-#endif
 	}
 	return root;
+}
+
+/* 给定一个整数 n，求以 1 ... n 为节点组成的二叉搜索树有多少种？
+* 
+	输入: 3
+	输出: 5
+	解释:
+	给定 n = 3, 一共有 5 种不同结构的二叉搜索树:
+
+	   1         3     3      2      1
+		\       /     /      / \      \
+		 3     2     1      1   3      2
+		/     /       \                 \
+	   2     1         2                 3
+*/
+int numTrees(int n) {
+	vector<int> dp(n + 1, 0);
+	dp[0] = 1;
+	dp[1] = 1;
+	for (int num = 2; num <= n; num++) 
+	{
+		//当i为根，左子树个数i-1，右子树个数n-i
+		//即f(i) = G(i-1)*G(n-i),
+		for (int i = 0; i <= num; i++)
+		{
+			dp[num] += dp[i - 1] * dp[num - i];
+		}
+	}
+	return dp[n];
+}
+
+
+/* 78. 子集
+* 给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
+* 说明：解集不能包含重复的子集。
+*/
+void helper(vector<vector<int> >& res, vector<int> tmp, vector<int>& nums, int level) 
+{
+	if (tmp.size() <= nums.size()) {
+		res.push_back(tmp);
+	}
+	for (int i = level; i < nums.size(); i++) {
+		tmp.push_back(nums[i]);
+		helper(res, tmp, nums, i + 1);
+		tmp.pop_back();
+	}
+}
+vector<vector<int>> subsets(vector<int>& nums)
+{
+	vector<vector<int> > res;
+	vector<int> tmp;
+	helper(res, tmp, nums, 0);
+	return res;
 }
 
 
 void Test::Tree()
 {
+	numTrees(3);
+
 	//vector<int> inorder = { 9,3,15,20,7 };
 	//vector<int> postorder = { 9,15,7,20,3 };
 	//buildTree(inorder, postorder);
 
-	Node* root = new Node(1);
-	root->left = new Node(2);
-	root->right = new Node(3);
-	root->left->left = new Node(4);
-	root->left->right = new Node(5);
-	root->right->left = new Node(6);
-	root->right->right = new Node(7);
-	connect(root);
+	//Node* root = new Node(1);
+	//root->left = new Node(2);
+	//root->right = new Node(3);
+	//root->left->left = new Node(4);
+	//root->left->right = new Node(5);
+	//root->right->left = new Node(6);
+	//root->right->right = new Node(7);
+	//connect(root);
 }
 
 
