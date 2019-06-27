@@ -32,4 +32,5 @@ public:
 	void HashTable();
 	void Tree();
 	void Dynamic();
+	void Interview();
 };

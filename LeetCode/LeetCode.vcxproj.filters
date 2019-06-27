@@ -50,5 +50,8 @@
     <ClCompile Include="DynamicProgramming.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Interview.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
