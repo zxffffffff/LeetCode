@@ -72,7 +72,7 @@ void levelOrderSearch(vector<int>& v, vector<TreeNode*>& task, TreeNode* root)
 	task.push_back(root->left);
 	task.push_back(root->right);
 }
-vector<vector<int>> levelOrder(TreeNode* root) 
+vector<vector<int>> levelOrder2(TreeNode* root) 
 {
 	vector<vector<int>> v;
 	vector<TreeNode*> task;
@@ -106,7 +106,7 @@ void maxDepthSearch(int& depth, TreeNode* root)
 	maxDepthSearch(depth, root->right);
 	depth--;
 }
-int maxDepth(TreeNode* root) 
+int maxDepth2(TreeNode* root) 
 {
 	int depth = 0;
 	maxDepthSearch(depth, root);
@@ -263,15 +263,15 @@ int numTrees(int n) {
 	vector<int> dp(n + 1, 0);
 	dp[0] = 1;
 	dp[1] = 1;
-	for (int num = 2; num <= n; num++) 
-	{
-		//当i为根，左子树个数i-1，右子树个数n-i
-		//即f(i) = G(i-1)*G(n-i),
-		for (int i = 0; i <= num; i++)
-		{
-			dp[num] += dp[i - 1] * dp[num - i];
-		}
-	}
+	//for (int num = 2; num <= n; num++) 
+	//{
+	//	//当i为根，左子树个数i-1，右子树个数n-i
+	//	//即f(i) = G(i-1)*G(n-i),
+	//	for (int i = 0; i <= num; i++)
+	//	{
+	//		dp[num] += dp[i - 1] * dp[num - i];
+	//	}
+	//}
 	return dp[n];
 }
 
@@ -302,7 +302,7 @@ vector<vector<int>> subsets(vector<int>& nums)
 
 void Test::Tree()
 {
-	numTrees(3);
+	//numTrees(3);
 
 	//vector<int> inorder = { 9,3,15,20,7 };
 	//vector<int> postorder = { 9,15,7,20,3 };

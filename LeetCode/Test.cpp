@@ -421,6 +421,7 @@ Test::Test()
 	Characters();
 	HashTable();
 	Tree();
+	Interview();
 }
 
 Test::~Test()

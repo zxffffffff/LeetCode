@@ -6,7 +6,7 @@ using namespace std;
 /* 20. 有效的括号
 * 标准解答：堆栈实现
 */
-bool isValid(string s) {
+bool isValid2(string s) {
 	// 通过map来存放左右括号
 	stack<char> stackTmp;
 	map<char, char> mapDic;

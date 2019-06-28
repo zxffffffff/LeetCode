@@ -77,7 +77,7 @@ void calc(vector<string> &vec, int l, int r, string str) {
 		if(r > 0) calc(vec, l, r - 1, str + ")");
 	}
 }
-vector<string> generateParenthesis(int n) {
+vector<string> generateParenthesis2(int n) {
 	vector<string> vecStr;
 	if (n < 1)
 		return vecStr;

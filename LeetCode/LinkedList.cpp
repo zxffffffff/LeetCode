@@ -14,7 +14,7 @@ struct ListNode {
 /* 206. 反转链表
 * 题目比较简单，所以不光是考察思考能力，更注重考察代码的实现能力，需要简洁
 */
-ListNode* reverseList(ListNode* head) {
+ListNode* reverseList3(ListNode* head) {
 	if (head == NULL || head->next == NULL)
 		return head;
 
@@ -34,7 +34,7 @@ ListNode* reverseList(ListNode* head) {
 /* 24. 两两交换链表中的节点
 * 同样，对思维要求不高，对代码要求很高
 */
-ListNode* swapPairs(ListNode* head) {
+ListNode* swapPairs2(ListNode* head) {
 	if (head == NULL || head->next == NULL)
 		return head;
 
@@ -65,7 +65,7 @@ ListNode* swapPairs(ListNode* head) {
 /* 141. 环形链表
 * 列出解法，然后选择最优解，考察思路和代码能力
 */
-bool hasCycle(ListNode *head) {
+bool hasCycle2(ListNode *head) {
 	//set<ListNode *> setFlag;
 	//ListNode *p = head;
 	//while (p != NULL) {

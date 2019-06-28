@@ -3,12 +3,8 @@
 
 using namespace std;
 
-/* 
-*/
 
-void Test::Interview()
-{
-}
+
 
 
 /* 数组和链表 *****************************************************************************************
@@ -28,8 +24,34 @@ struct ListNode {
 进阶:
 你可以迭代或递归地反转链表。你能否用两种方法解决这道题？
 */
+ListNode* reverseList2(ListNode* head) {
+	if (head == NULL || head->next == NULL)
+		return head;
+
+	ListNode *pCur = head, *pNext = pCur->next;
+	head->next = NULL;
+	while (pNext != NULL)
+	{
+		ListNode *tmp = pNext->next;
+		pNext->next = pCur;
+		pCur = pNext;
+		pNext = tmp;
+	}
+	return pCur;
+}
 ListNode* reverseList(ListNode* head) {
-	return 0;
+	if (head == NULL)
+		return head;
+
+	//递归终止
+	if (head->next == NULL)
+		return head;
+
+	ListNode *pCur = head, *pNext = pCur->next;
+	ListNode *pHead = reverseList(pNext);
+	pNext->next = pCur;
+	pCur->next = NULL;
+	return pHead;
 }
 
 /* 24. 两两交换链表中的节点
@@ -40,7 +62,16 @@ ListNode* reverseList(ListNode* head) {
 给定 1->2->3->4, 你应该返回 2->1->4->3.
 */
 ListNode* swapPairs(ListNode* head) {
-	return 0;
+	//递归终止
+	if (head == NULL || head->next == NULL)
+		return head;
+
+	ListNode *pCur = head, *pNext = pCur->next;
+	ListNode *tmp = swapPairs(pNext->next);
+
+	pCur->next = tmp;
+	pNext->next = pCur;
+	return pNext;
 }
 
 /* 141. 环形链表
@@ -57,7 +88,19 @@ ListNode* swapPairs(ListNode* head) {
 解释：链表中有一个环，其尾部连接到第一个节点。
 */
 bool hasCycle(ListNode* head) {
-	return 0;
+	if (head == NULL || head->next == NULL)
+		return false;
+
+	//快慢指针
+	ListNode *pFast = head->next, *pSlow = head;
+	while (pFast != NULL && pFast->next != NULL)
+	{
+		if (pFast == pSlow)
+			return true;
+		pFast = pFast->next->next;
+		pSlow = pSlow->next;
+	}
+	return false;
 }
 
 /*142. 环形链表 II
@@ -68,7 +111,17 @@ bool hasCycle(ListNode* head) {
 说明：不允许修改给定的链表。
 */
 ListNode* detectCycle(ListNode* head) {
-	return 0;
+	set<ListNode *> set1;
+	ListNode *pCur = head;
+	while (pCur != NULL)
+	{
+		auto ite = set1.find(pCur);
+		if(ite != set1.end())
+			return pCur;
+		set1.insert(pCur);
+		pCur = pCur->next;
+	}
+	return NULL;
 }
 
 /* 25. K 个一组翻转链表
@@ -86,7 +139,30 @@ k 是一个正整数，它的值小于或等于链表的长度。
 你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
 */
 ListNode* reverseKGroup(ListNode* head, int k) {
-	return 0;
+	if (head == NULL)
+		return head;
+
+	//长度不够，递归终止
+	ListNode *pCur = head->next;
+	for (int i = 1; i < k; i++) {
+		if (pCur == NULL)
+			return head;
+		pCur = pCur->next;
+	}
+
+	ListNode *pHead = reverseKGroup(pCur, k);
+	
+	//反转k个节点
+	pCur = head;
+	ListNode *pNext = pCur->next;
+	for (int i = 1; i < k; i++) {
+		ListNode *tmp = pNext->next;
+		pNext->next = pCur;
+		pCur = pNext;
+		pNext = tmp;
+	}
+	head->next = pHead;
+	return pCur;
 }
 
 
@@ -126,8 +202,20 @@ ListNode* reverseKGroup(ListNode* head, int k) {
 S 和 T 只含有小写字母以及字符 '#'。
 */
 bool backspaceCompare(string S, string T) {
+	auto parse = [](const string &s) {
+		stack<char> sk;
+		for (auto c : s) {
+			if (c != '#')
+				sk.push(c);
+			else if (!sk.empty())
+				sk.pop();
+		}
+		return sk;
+	};
 
+	return (parse(S) == parse(T));
 }
+
 
 
 /* 232. 用栈实现队列
@@ -164,17 +252,17 @@ public:
 
 	/** Removes the element from in front of queue and returns that element. */
 	int pop() {
-
+		return 0;
 	}
 
 	/** Get the front element. */
 	int peek() {
-
+		return 0;
 	}
 
 	/** Returns whether the queue is empty. */
 	bool empty() {
-
+		return 0;
 	}
 	/**
 	 * Your MyQueue object will be instantiated and called as such:
@@ -212,17 +300,17 @@ public:
 
 	/** Removes the element on top of the stack and returns that element. */
 	int pop() {
-
+		return 0;
 	}
 
 	/** Get the top element. */
 	int top() {
-
+		return 0;
 	}
 
 	/** Returns whether the stack is empty. */
 	bool empty() {
-
+		return 0;
 	}
 	/**
 	 * Your MyStack object will be instantiated and called as such:
@@ -262,7 +350,7 @@ public:
 输出: true
 */
 bool isValid(string s) {
-
+	return 0;
 }
 
 
@@ -294,7 +382,7 @@ public:
 	}
 
 	int add(int val) {
-
+		return 0;
 	}
 	/**
 	 * Your KthLargest object will be instantiated and called as such:
@@ -349,7 +437,14 @@ public:
 如果输入字符串包含 unicode 字符怎么办？你能否调整你的解法来应对这种情况？
 */
 bool isAnagram(string s, string t) {
+	auto toHash = [](string s) {
+		vector<int> hash(26, 0);
+		for (auto c : s)
+			hash[c - 'a']++;
+		return hash;
+	};
 
+	return (toHash(s) == toHash(t));
 }
 
 /* 1. 两数之和
@@ -363,7 +458,34 @@ bool isAnagram(string s, string t) {
 所以返回 [0, 1]
 */
 vector<int> twoSum(vector<int>& nums, int target) {
+	//建表 value : index
+	map<int, vector<int>> hash;
+	for (int i = 0; i < nums.size(); i++) {
+		hash[nums[i]].push_back(i);
+	}
 
+	vector<int> v;
+	for (auto n : nums) {
+		int need = target - n;
+		if(hash.find(need) == hash.end())
+			continue;
+
+		//相同val
+		if (need == n) {
+			if (hash[n].size() < 2)
+				continue;
+			else {
+				v.push_back(hash[n][0]);
+				v.push_back(hash[n][1]);
+				break;
+			}
+		}
+		//不同val
+		v.push_back(hash[n][0]);
+		v.push_back(hash[need][0]);
+		break;
+	}
+	return v;
 }
 
 /* 15. 三数之和
@@ -379,8 +501,108 @@ vector<int> twoSum(vector<int>& nums, int target) {
 ]
 */
 vector<vector<int>> threeSum(vector<int>& nums) {
+	//建表 value : times
+	map<int, int> hash;
+	for (auto n : nums) {
+		if (hash.find(n) == hash.end())
+			hash[n] = 1;
+		else
+			hash[n]++;
+	}
 
+	//遍历两个值，找第三个
+	set<vector<int>> setv;
+	vector<int> v(3, 0);
+	for (auto ite = hash.begin(); ite != hash.end(); ite++) {
+		for (auto ite2 = ite; ite2 != hash.end(); ite2++) {
+			int need = 0 - (*ite).first - (*ite2).first;
+			auto ite3 = hash.find(need);
+			if(ite3 == hash.end())
+				continue;
+
+			// 1+1+1(-1,-2,3) , 2+1(-1,-1,2) , 3(0,0,0)
+			if (ite == ite2 && (*ite).second < 2)
+				continue;
+			if((ite == ite3 || ite2 == ite3) && (*ite3).second < 2)
+				continue;
+			if(ite == ite2 && ite2 == ite3 && (*ite).second < 3)
+				continue;
+
+			v[0] = (*ite).first;
+			v[1] = (*ite2).first;
+			v[2] = need;
+			sort(v.begin(), v.end());
+			setv.insert(v);
+		}
+	}
+
+	vector<vector<int>> vv;
+	for (auto v : setv)
+		vv.push_back(v);
+	return vv;
+	
+	//////////////////////////////////////////////////////////////////////////
+	vector<vector<int>> result;
+	sort(nums.begin(), nums.end());
+	for (int i = 0; i < nums.size() && nums[i] <= 0; i++)
+	{
+		if (i > 0 && nums[i] == nums[i - 1])
+			continue;
+		int first = i + 1; int last = nums.size() - 1;
+		while (first < last)
+		{
+			int sums = nums[i] + nums[first] + nums[last];
+			if (sums > 0)
+				last--;
+			else if (sums < 0)
+				first++;
+			else
+			{
+				result.push_back(vector<int>{nums[i], nums[first], nums[last]});
+				first++;
+				while (first < last && nums[first] == nums[first - 1])
+					first++;
+			}
+		}
+	}
+	return result;
+	//////////////////////////////////////////////////////////////////////////
+	vector<vector<int>> three; 
+	vector<int>num;
+	if (nums.size() >= 3)
+	{
+		sort(nums.begin(), nums.end());
+		int first, last;
+		for (int i = 0; i < nums.size() - 2; i++)
+		{
+			if (i > 0 && nums[i] == nums[i - 1])
+				continue;
+
+			first = i + 1; 
+			last = nums.size() - 1;
+
+			int sum;
+			while (first != last)
+			{
+				sum = nums[i] + nums[first] + nums[last];
+				if (sum < 0) first++;
+				if (sum > 0) last--;
+				if (sum == 0)
+				{
+					if (nums[first] != nums[first - 1] || first == i + 1)
+					{
+						num.push_back(nums[i]); num.push_back(nums[first]); num.push_back(nums[last]);
+						three.push_back(num);
+						num.clear();
+					}
+					first++;
+				}
+			}
+		}
+	}
+	return three;
 }
+
 
 /* 18. 四数之和
 给定一个包含 n 个整数的数组 nums 和一个目标值 target，判断 nums 中是否存在四个元素 a，b，c 和 d ，
@@ -397,7 +619,7 @@ vector<vector<int>> threeSum(vector<int>& nums) {
 ]
 */
 vector<vector<int>> fourSum(vector<int>& nums, int target) {
-
+	return vector<vector<int>>();
 }
 
 
@@ -435,8 +657,32 @@ struct TreeNode {
 解释: 输入为: [5,1,4,null,null,3,6]。
      根节点的值为 5 ，但是其右子节点值为 4 。
 */
-bool isValidBST(TreeNode* root) {
+bool isValidBST(TreeNode* root, int &max, int &min) {
+	if (root == NULL)
+		return true;
 
+	bool ret = false;
+	int maxL, minL, maxR, minR;
+	maxL = minL = maxR = minR = root->val;
+
+	if (root->left != NULL) {
+		ret = isValidBST(root->left, maxL, minL);
+		if (!ret || maxL >= root->val)
+			return false;
+	}
+	if (root->right != NULL) {
+		ret = isValidBST(root->right, maxR, minR);
+		if (!ret || minR <= root->val)
+			return false;
+	}
+
+	max = maxR;
+	min = minL;
+	return true;
+}
+bool isValidBST(TreeNode* root) {
+	int max, min;
+	return isValidBST(root, max, min);
 }
 
 /* 235. 二叉搜索树的最近公共祖先
@@ -449,9 +695,9 @@ bool isValidBST(TreeNode* root) {
    / \
   2    8
  /\    /\
-0  4 7  8
-  /\
- 3  5
+0  4  7  9
+   /\
+  3  5
 
 示例 1:
 输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
@@ -468,15 +714,20 @@ bool isValidBST(TreeNode* root) {
 p、q 为不同节点且均存在于给定的二叉搜索树中。
 */
 TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-
+	//找到分叉口
+	if (root->val > p->val && root->val > q->val)
+		return lowestCommonAncestor(root->left, p, q);
+	if (root->val < p->val && root->val < q->val)
+		return lowestCommonAncestor(root->right, p, q);
+	return root;
 }
 
-/* 236. 二叉树的最近公共祖先
+/* 236. 二叉树的最近公共祖先（不是搜索树！！！！！）
 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，
 满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
 
-例如，给定如下二叉树:  root = [3,5,1,6,2,0,8,null,null,7,4] （结构同上题）
+例如，给定如下二叉树:  root = [3,5,1,6,2,0,8,null,null,7,4] 
 
 示例 1:
 输入: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
@@ -493,7 +744,20 @@ TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
 p、q 为不同节点且均存在于给定的二叉树中。
 */
 TreeNode* lowestCommonAncestor2(TreeNode* root, TreeNode* p, TreeNode* q) {
+	if (root == NULL || root == p || root == q)
+		return root;
 
+	TreeNode *l = lowestCommonAncestor2(root->left, p, q);
+	if (l != NULL && l != p && l != q)
+		return l;
+
+	TreeNode *r = lowestCommonAncestor2(root->right, p, q);
+	if (r != NULL && r != p && r != q)
+		return r;
+
+	if (l != NULL && r != NULL)
+		return root;
+	return (l != NULL ? l : r);
 }
 
 
@@ -527,9 +791,27 @@ TreeNode* lowestCommonAncestor2(TreeNode* root, TreeNode* p, TreeNode* q) {
 -100.0 < x < 100.0
 n 是 32 位有符号整数，其数值范围是 [−2^31, 2^31 − 1] 。
 */
-double myPow(double x, int n) {
+double fastPow(double x, long long n) {
+	if (n == 0) 
+		return 1.0;
 
+	double half = fastPow(x, n / 2);
+	if (n % 2 == 0)
+		x = half * half;
+	else
+		x = half * half * x;
+	return x;
 }
+double myPow(double x, int n) {
+	long long ll = n;
+	if (n < 0) {
+		x = 1 / x;
+		ll = -ll;
+	}
+	return fastPow(x, n);
+}
+
+
 
 /* 169. 求众数
 给定一个大小为 n 的数组，找到其中的众数。众数是指在数组中出现次数大于 ⌊ n/2 ⌋ 的元素。
@@ -543,8 +825,24 @@ double myPow(double x, int n) {
 输入: [2,2,1,1,1,2,2]
 输出: 2
 */
+int MECount(vector<int>& nums, int n, int l, int r) {
+	//查找出现的次数
+	return 1;
+}
+int majorityElement(vector<int>& nums, int l, int r) {
+	//分治法，左边一半和右边一半进行对比
+	int mid = l + (r - l) / 2;
+	int mjL = majorityElement(nums, l, mid);
+	int mjR = majorityElement(nums, mid + 1, r);
+	if (mjL == mjR)
+		return mjL;
+	return (MECount(nums, mjL, l, r) > MECount(nums, mjR, l, r) ? mjL : mjR);
+}
 int majorityElement(vector<int>& nums) {
-
+	//偷懒法
+	//sort(nums.begin(), nums.end());
+	//return nums[nums.size() / 2];
+	return 1;
 }
 
 
@@ -575,7 +873,12 @@ int majorityElement(vector<int>& nums) {
 解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
 */
 int maxProfit(vector<int>& prices) {
-
+	int n = 0;
+	for (int i = 1; i < prices.size(); i++) {
+		if (prices[i] > prices[i - 1])
+			n += prices[i] - prices[i - 1];
+	}
+	return n;
 }
 
 
@@ -599,7 +902,27 @@ int maxProfit(vector<int>& prices) {
 ]
 */
 vector<vector<int>> levelOrder(TreeNode* root) {
+	vector<vector<int>> v;
+	vector<TreeNode*> task;
 
+	task.push_back(root);
+	while (task.size() > 0)
+	{
+		vector<int> vTmp;
+		vector<TreeNode*> taskTmp;
+		for (auto p : task)
+		{
+			if (p != NULL) {
+				vTmp.push_back(p->val);
+				taskTmp.push_back(p->left);
+				taskTmp.push_back(p->right);
+			}
+		}
+		task.swap(taskTmp);
+		if (vTmp.size() > 0)
+			v.push_back(vTmp);
+	}
+	return v;
 }
 
 /* 104. 二叉树的最大深度
@@ -615,8 +938,18 @@ vector<vector<int>> levelOrder(TreeNode* root) {
    15   7
 返回它的最大深度 3 。
 */
+int maxDepthLevel(TreeNode *root, int level) {
+	int l = level, r = level;
+	if (root->left)
+		l = maxDepthLevel(root->left, level + 1);
+	if (root->right)
+		r = maxDepthLevel(root->right, level + 1);
+	return max(l, r);
+}
 int maxDepth(TreeNode* root) {
-
+	if (root == NULL)
+		return 0;
+	return maxDepthLevel(root, 1);
 }
 
 /* 22. 括号生成
@@ -632,7 +965,26 @@ int maxDepth(TreeNode* root) {
 ]
 */
 vector<string> generateParenthesis(int n) {
+	set<string> base;
+	base.insert("()");
+	for (int i = 1; i < n; i++) {
+		set<string> v;
+		for (auto s : base) {
+			for (int idx = 0; idx <= s.size(); idx++) {
+				v.insert(string(s).insert(idx, "()"));
+			}
+		}
+		v.swap(base);
+	}
 
+	vector<string> ret;
+	for (auto &s : base)
+		ret.push_back(s);
+	return ret;
+}
+void Test::Interview()
+{
+	generateParenthesis(3);
 }
 
 
