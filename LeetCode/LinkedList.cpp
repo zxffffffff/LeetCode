@@ -5,11 +5,6 @@ using namespace std;
 
 
 // LeetCode 链表节点
-struct ListNode {
-	int val;
-	ListNode *next;
-	ListNode(int x) : val(x), next(NULL) {}
-};
 
 /* 206. 反转链表
 * 题目比较简单，所以不光是考察思考能力，更注重考察代码的实现能力，需要简洁

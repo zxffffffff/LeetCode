@@ -9,11 +9,6 @@ using namespace std;
 
 /* 数组和链表 *****************************************************************************************
 */
-struct ListNode {
-	int val;
-	ListNode* next;
-	ListNode(int x) : val(x), next(NULL) {}
-};
 
 /* 206. 反转链表
 反转一个单链表。
