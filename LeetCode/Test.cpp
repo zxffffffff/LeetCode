@@ -718,7 +718,8 @@ int numIslands(vector<vector<char>>& grid) {
 拓扑排序也可以通过 BFS 完成。
 */
 bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-
+	//1建图
+	//2查图
 	return 0;
 }
 
@@ -811,10 +812,11 @@ int totalNQueens(int n) {
 输出: false
 解释: 除了第一行的第一个数字从 5 改为 8 以外，空格内其他数字均与 示例1 相同。
 	 但由于位于左上角的 3x3 宫内有两个 8 存在, 因此这个数独是无效的。
-
 */
 bool isValidSudoku(vector<vector<char>>& board) {
+	
 
+	return 0;
 }
 
 /* 37. 解数独
@@ -842,17 +844,15 @@ void solveSudoku(vector<vector<char>>& board) {
 由于返回类型是整数，结果只保留整数的部分，小数部分将被舍去。
 
 示例 1:
-输入: 4
-输出: 2
+输入: 4 输出: 2
 
 示例 2:
-输入: 8
-输出: 2
-说明: 8 的平方根是 2.82842...,
-	 由于返回类型是整数，小数部分将被舍去。
+输入: 8 输出: 2
+说明: 8 的平方根是 2.82842...,由于返回类型是整数，小数部分将被舍去。
 */
 int mySqrt(int x) {
-
+	
+	return 0;
 }
 
 
@@ -897,7 +897,8 @@ public:
 
 /* 79. 单词搜索
 给定一个二维网格和一个单词，找出该单词是否存在于网格中。
-单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。
+同一个单元格内的字母不允许被重复使用。
 
 示例:
 board =
@@ -911,7 +912,25 @@ board =
 给定 word = "ABCB", 返回 false.
 */
 bool exist(vector<vector<char>>& board, string word) {
+	if (word.empty())
+		return true;
+	if (board.empty() || board[0].empty())
+		return false;
+	
+	for (int i = 0; i < board.size(); i++) {
+		for (int j = 0; j < board[i].size(); j++) {
+			if(word[0] != board[i][j])
+				continue;
 
+			set<pair<int, int>> setIdx;
+			pair<int, int> idx(i, j);
+			for (auto c : word) {
+				////
+			}
+		}
+	}
+
+	return false;
 }
 
 
@@ -947,7 +966,7 @@ Test::Test()
 
 //	cout << "771. count=" << numJewelsInStones("aA", "aAAbbbb") << endl;
 
-	Characters();
+	Strings();
 	HashTable();
 	Tree();
 	Interview();

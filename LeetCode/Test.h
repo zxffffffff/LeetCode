@@ -34,7 +34,7 @@ public:
 	Test();
 	~Test();
 
-	void Characters();
+	void Strings();
 	void HashTable();
 	void Tree();
 	void Dynamic();

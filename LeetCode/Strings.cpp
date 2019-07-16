@@ -3,6 +3,11 @@
 
 using namespace std;
 
+void Test::Strings()
+{
+
+}
+
 
 
 /* 804. 唯一摩尔斯密码词
@@ -1274,21 +1279,265 @@ vector<string> reorderLogFiles(vector<string>& logs) {
 	return logWord;
 }
 
-void Test::Characters()
-{
-	vector<string> logs = {"a1 9 2 3 1","g1 act car","zo4 4 7","ab1 off key dog","a8 act zoo","a2 act car"};
-	logs = reorderLogFiles(logs);
-}
-
 //////////////////////////////////////// 50%
 
 
+/* 67. 二进制求和
+给定两个二进制字符串，返回他们的和（用二进制表示）。
+输入为非空字符串且只包含数字 1 和 0。
+
+示例 1:
+输入: a = "11", b = "1"
+输出: "100"
+
+示例 2:
+输入: a = "1010", b = "1011"
+输出: "10101"
+*/
+string addBinary(string a, string b) {
+    
+}
 
 
+/* 917. 仅仅反转字母
+给定一个字符串 S，返回 “反转后的” 字符串，其中不是字母的字符都保留在原地，而所有字母的位置发生反转。
+
+提示：
+S.length <= 100
+33 <= S[i].ASCIIcode <= 122 
+S 中不包含 \ or " 
+
+示例 1：
+输入："ab-cd"
+输出："dc-ba"
+
+示例 2：
+输入："a-bC-dEf-ghIj"
+输出："j-Ih-gfE-dCba"
+
+示例 3：
+输入："Test1ng-Leet=code-Q!"
+输出："Qedo1ct-eeLg=ntse-T!"
+*/
+string reverseOnlyLetters(string S) {
+	auto isLetter = [](char c) {
+		if (c >= 'a' && c <= 'z')
+			return true;
+		if (c >= 'A' && c <= 'Z')
+			return true;
+		return false;
+	};
+
+	int len = S.length();
+	if (len < 2)
+		return S;
+	int lo = 0;
+	int hi = len - 1;
+// 	while (hi > lo) {
+// 		while(isLetter(S[hi]))
+// 	}
+}
 
 
+/* 383. 赎金信
+给定一个赎金信 (ransom) 字符串和一个杂志(magazine)字符串，判断第一个字符串ransom
+能不能由第二个字符串magazines里面的字符构成。如果可以构成，返回 true ；否则返回 false。
+(题目说明：为了不暴露赎金信字迹，要从杂志上搜索各个需要的字母，组成单词来表达意思。)
+
+注意：
+你可以假设两个字符串均只含有小写字母。
+
+canConstruct("a", "b") -> false
+canConstruct("aa", "ab") -> false
+canConstruct("aa", "aab") -> true
+*/
+bool canConstruct(string ransomNote, string magazine) {
+    
+}
 
 
+/* 1023. 驼峰式匹配
+如果我们可以将小写字母插入模式串 pattern 得到待查询项 query，那么待查询项与给定模式串匹配。
+（我们可以在任何位置插入每个字符，也可以插入 0 个字符。）
 
+给定待查询列表 queries，和模式串 pattern，返回由布尔值组成的答案列表 answer。只有在待查项
+ queries[i] 与模式串 pattern 匹配时， answer[i] 才为 true，否则为 false。
+
+示例 1：
+输入：queries = ["FooBar","FooBarTest","FootBall","FrameBuffer","ForceFeedBack"], pattern = "FB"
+输出：[true,false,true,true,false]
+示例：
+"FooBar" 可以这样生成："F" + "oo" + "B" + "ar"。
+"FootBall" 可以这样生成："F" + "oot" + "B" + "all".
+"FrameBuffer" 可以这样生成："F" + "rame" + "B" + "uffer".
+
+示例 2：
+输入：queries = ["FooBar","FooBarTest","FootBall","FrameBuffer","ForceFeedBack"], pattern = "FoBa"
+输出：[true,false,true,false,false]
+解释：
+"FooBar" 可以这样生成："Fo" + "o" + "Ba" + "r".
+"FootBall" 可以这样生成："Fo" + "ot" + "Ba" + "ll".
+
+示例 3：
+输出：queries = ["FooBar","FooBarTest","FootBall","FrameBuffer","ForceFeedBack"], pattern = "FoBaT"
+输入：[false,true,false,false,false]
+解释： 
+"FooBarTest" 可以这样生成："Fo" + "o" + "Ba" + "r" + "T" + "est".
+ 
+提示：
+1 <= queries.length <= 100
+1 <= queries[i].length <= 100
+1 <= pattern.length <= 100
+所有字符串都仅由大写和小写英文字母组成。
+*/
+vector<bool> camelMatch(vector<string>& queries, string pattern) {
+    
+}
+
+/* 539. 最小时间差
+给定一个 24 小时制（小时:分钟）的时间列表，找出列表中任意两个时间的最小时间差并已分钟数表示。
+
+示例 1：
+输入: ["23:59","00:00"]
+输出: 1
+
+备注:
+列表中时间数在 2~20000 之间。
+每个时间取值在 00:00~23:59 之间。
+*/
+int findMinDifference(vector<string>& timePoints) {
+    
+}
+
+
+/* 551. 学生出勤记录 I
+给定一个字符串来代表一个学生的出勤记录，这个记录仅包含以下三个字符：
+'A' : Absent，缺勤
+'L' : Late，迟到
+'P' : Present，到场
+如果一个学生的出勤记录中不超过一个'A'(缺勤)并且不超过两个连续的'L'(迟到),那么这个学生会被奖赏。
+你需要根据这个学生的出勤记录判断他是否会被奖赏。
+
+示例 1:
+输入: "PPALLP"
+输出: True
+
+示例 2:
+输入: "PPALLL"
+输出: False
+*/
+bool checkRecord(string s) {
+    
+}
+
+
+/* 541. 反转字符串 II
+给定一个字符串和一个整数 k，你需要对从字符串开头算起的每个 2k 个字符的前k个字符进行反转。
+如果剩余少于 k 个字符，则将剩余的所有全部反转。
+如果有小于 2k 但大于或等于 k 个字符，则反转前 k 个字符，并将剩余的字符保持原样。
+
+示例:
+输入: s = "abcdefg", k = 2
+输出: "bacdfeg"
+
+要求:
+该字符串只包含小写的英文字母。
+给定字符串的长度和 k 在[1, 10000]范围内。
+*/
+string reverseStr(string s, int k) {
+    
+}
+
+
+/* 415. 字符串相加
+给定两个字符串形式的非负整数 num1 和num2 ，计算它们的和。
+
+注意：
+num1 和num2 的长度都小于 5100.
+num1 和num2 都只包含数字 0-9.
+num1 和num2 都不包含任何前导零。
+你不能使用任何內建 BigInteger 库， 也不能直接将输入的字符串转换为整数形式。
+*/
+string addStrings(string num1, string num2) {
+    
+}
+
+
+/* 696. 计数二进制子串
+给定一个字符串 s，计算具有相同数量0和1的非空(连续)子字符串的数量，
+并且这些子字符串中的所有0和所有1都是组合在一起的。
+重复出现的子串要计算它们出现的次数。
+
+示例 1 :
+输入: "00110011"
+输出: 6
+解释: 有6个子串具有相同数量的连续1和0：“0011”，“01”，“1100”，“10”，“0011” 和 “01”。
+请注意，一些重复出现的子串要计算它们出现的次数。
+另外，“00110011”不是有效的子串，因为所有的0（和1）没有组合在一起。
+
+示例 2 :
+输入: "10101"
+输出: 4
+解释: 有4个子串：“10”，“01”，“10”，“01”，它们具有相同数量的连续1和0。
+
+注意：
+s.length 在1到50,000之间。
+s 只包含“0”或“1”字符。
+*/
+int countBinarySubstrings(string s) {
+    
+}
+
+
+/* 93. 复原IP地址
+给定一个只包含数字的字符串，复原它并返回所有可能的 IP 地址格式。
+
+示例:
+输入: "25525511135"
+输出: ["255.255.11.135", "255.255.111.35"]
+*/
+vector<string> restoreIpAddresses(string s) {
+    
+}
+
+
+/* 115. 不同的子序列
+给定一个字符串 S 和一个字符串 T，计算在 S 的子序列中 T 出现的个数。
+一个字符串的一个子序列是指，通过删除一些（也可以不删除）字符且不干扰剩余字符
+相对位置所组成的新字符串。（例如，"ACE" 是 "ABCDE" 的一个子序列，而 "AEC" 不是）
+
+示例 1:
+输入: S = "rabbbit", T = "rabbit"
+输出: 3
+解释:
+如下图所示, 有 3 种可以从 S 中得到 "rabbit" 的方案。
+(上箭头符号 ^ 表示选取的字母)
+rabbbit
+^^^^ ^^
+rabbbit
+^^ ^^^^
+rabbbit
+^^^ ^^^
+
+示例 2:
+输入: S = "babgbag", T = "bag"
+输出: 5
+解释:
+如下图所示, 有 5 种可以从 S 中得到 "bag" 的方案。 
+(上箭头符号 ^ 表示选取的字母)
+babgbag
+^^ ^
+babgbag
+^^    ^
+babgbag
+^    ^^
+babgbag
+  ^  ^^
+babgbag
+    ^^^
+*/
+int numDistinct(string s, string t) {
+    
+}
 
 

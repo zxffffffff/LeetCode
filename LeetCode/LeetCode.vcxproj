@@ -155,7 +155,7 @@
     <ClInclude Include="Test.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Characters.cpp" />
+    <ClCompile Include="Strings.cpp" />
     <ClCompile Include="DynamicProgramming.cpp" />
     <ClCompile Include="HashTable.cpp" />
     <ClCompile Include="Interview.cpp" />
