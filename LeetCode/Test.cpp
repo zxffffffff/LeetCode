@@ -748,7 +748,8 @@ n 皇后问题研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并
 解释: 4 皇后问题存在两个不同的解法。
 */
 vector<vector<string>> solveNQueens(int n) {
-
+	vector<vector<string>> ret;
+	return ret;
 }
 
 /* 52. N皇后 II
@@ -773,7 +774,7 @@ n 皇后问题研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并
 ]
 */
 int totalNQueens(int n) {
-
+	return 0;
 }
 
 

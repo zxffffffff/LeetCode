@@ -3,11 +3,6 @@
 
 using namespace std;
 
-void Test::Strings()
-{
-
-}
-
 
 
 /* 804. 唯一摩尔斯密码词
@@ -1295,7 +1290,7 @@ vector<string> reorderLogFiles(vector<string>& logs) {
 输出: "10101"
 */
 string addBinary(string a, string b) {
-    
+	return "";
 }
 
 
@@ -1329,13 +1324,18 @@ string reverseOnlyLetters(string S) {
 	};
 
 	int len = S.length();
-	if (len < 2)
-		return S;
 	int lo = 0;
 	int hi = len - 1;
-// 	while (hi > lo) {
-// 		while(isLetter(S[hi]))
-// 	}
+	while (lo < hi) {
+		while (lo < hi && !isLetter(S[hi]))
+			hi--;
+		while (lo < hi && !isLetter(S[lo]))
+			lo++;
+		swap(S[hi], S[lo]);
+		hi--;
+		lo++;
+	}
+	return S;
 }
 
 
@@ -1352,7 +1352,15 @@ canConstruct("aa", "ab") -> false
 canConstruct("aa", "aab") -> true
 */
 bool canConstruct(string ransomNote, string magazine) {
-    
+	int hash[26] = { 0 };
+	for (auto c : magazine)
+		hash[c - 'a']++;
+	for (auto c : ransomNote) {
+		if (hash[c - 'a'] == 0)
+			return false;
+		hash[c - 'a']--;
+	}
+	return true;
 }
 
 
@@ -1391,7 +1399,21 @@ bool canConstruct(string ransomNote, string magazine) {
 所有字符串都仅由大写和小写英文字母组成。
 */
 vector<bool> camelMatch(vector<string>& queries, string pattern) {
-    
+	auto isUpper = [](char c) {
+		return (c >= 'A' && c <= 'Z');
+	};
+
+	vector<bool> vecRet;
+	for (auto &query : queries) {
+		int lp = 0, lq = 0;
+		bool flag = true;
+		
+		//todo
+
+
+		vecRet.push_back(flag);
+	}
+	return vecRet;
 }
 
 /* 539. 最小时间差
@@ -1406,7 +1428,25 @@ vector<bool> camelMatch(vector<string>& queries, string pattern) {
 每个时间取值在 00:00~23:59 之间。
 */
 int findMinDifference(vector<string>& timePoints) {
-    
+	auto str2time = [](string &s) {
+		return (s[0] - '0') * 600 + (s[1] - '0') * 60 + (s[3] - '0') * 10 + (s[4] - '0') * 1;
+	};
+	auto getMin = [str2time](string &s1, string &s2) {
+		int t1 = str2time(s1);
+		int t2 = str2time(s2);
+		int t = abs(abs(t1) - abs(t2));
+		return min(t, 24 * 60 - t);
+	};
+	
+	sort(timePoints.begin(), timePoints.end());
+	auto len = timePoints.size();
+	if (len < 1) 
+		return 0;
+	int nMin = getMin(timePoints[0], timePoints[len - 1]);
+	for (int i = 1; i < len; i++) {
+		nMin = min(nMin, getMin(timePoints[i], timePoints[i - 1]));
+	}
+	return nMin;
 }
 
 
@@ -1427,7 +1467,21 @@ int findMinDifference(vector<string>& timePoints) {
 输出: False
 */
 bool checkRecord(string s) {
-    
+	int a = 0, l = 0;
+	for (auto c : s) {
+		if (c == 'A') {
+			a++;
+			l = 0;
+		}
+		else if (c == 'L')
+			l++;
+		else
+			l = 0;
+
+		if (a > 1 || l > 2)
+			return false;
+	}
+	return true;
 }
 
 
@@ -1445,7 +1499,7 @@ bool checkRecord(string s) {
 给定字符串的长度和 k 在[1, 10000]范围内。
 */
 string reverseStr(string s, int k) {
-    
+	return "";
 }
 
 
@@ -1459,7 +1513,25 @@ num1 和num2 都不包含任何前导零。
 你不能使用任何內建 BigInteger 库， 也不能直接将输入的字符串转换为整数形式。
 */
 string addStrings(string num1, string num2) {
-    
+	reverse(num1.begin(), num1.end()); //可以优化 但是懒得改hah
+	reverse(num2.begin(), num2.end());
+	int len1 = num1.length();
+	int len2 = num2.length();
+	int len = max(len1, len2);
+	string sret;
+	int cur = 0;
+	for (int i = 0; i < len; i++) {
+		if (i < num1.length())
+			cur += num1[i] - '0';
+		if (i < num2.length())
+			cur += num2[i] - '0';
+		sret += (char)('0' + cur % 10);
+		cur /= 10;
+	}
+	if(cur > 0)
+		sret += (char)('0' + cur % 10); // '1'
+	reverse(sret.begin(), sret.end());
+	return sret;
 }
 
 
@@ -1485,19 +1557,71 @@ s.length 在1到50,000之间。
 s 只包含“0”或“1”字符。
 */
 int countBinarySubstrings(string s) {
-    
+
+	int ret = 0;
+	int len = s.length();
+	for (int i = 0; i < len; i++) {
+		string tmp;
+		int flag = 0;
+		for (int j = i; j < len; j++) {
+			tmp += s[j];
+			if (s[j] == '0') flag--;
+			if (s[j] == '1') flag++;
+			if (flag == 0 && !tmp.empty()) {
+				ret++;
+				break;
+			}
+		}
+	}
+	return ret;
 }
+
 
 
 /* 93. 复原IP地址
 给定一个只包含数字的字符串，复原它并返回所有可能的 IP 地址格式。
-
 示例:
 输入: "25525511135"
 输出: ["255.255.11.135", "255.255.111.35"]
 */
-vector<string> restoreIpAddresses(string s) {
-    
+class Solution {
+public:
+	vector<string> restoreIpAddresses(string s) {
+		vector<string> ret;
+		DFS(s, 0, 0, "", ret);
+		return ret;
+	}
+	void DFS(string s, int pos, int dots, string ip, vector<string> &ret) {
+		if (dots < 3) { //前三个（012）
+			for (int mv = 1; mv <= 3; mv++) {
+				if(pos + mv >= s.length())
+					break;
+				string tmp = s.substr(pos, mv);
+				if(!isvalid(tmp))
+					continue;
+				tmp = ip + tmp + '.';
+				DFS(s, pos + mv, dots + 1, tmp, ret);
+			}
+		}
+		else { //最后一个（3）
+			int mv = s.length() - pos;
+			string tmp = s.substr(pos, mv);
+			if (!isvalid(tmp))
+				return;
+			ip += tmp;
+			ret.push_back(ip);
+		}
+	}
+	bool isvalid(const string &s) {
+		if (s[0] == '0' && s.length() > 1) return false;
+		if (s.length() > 3) return false;
+		return stoi(s) < 256;
+	}
+};
+void Test::Strings()
+{
+	Solution s;
+	s.restoreIpAddresses("25525511135");
 }
 
 
@@ -1537,7 +1661,7 @@ babgbag
     ^^^
 */
 int numDistinct(string s, string t) {
-    
+	return 0;
 }
 
 
