@@ -718,8 +718,6 @@ int numIslands(vector<vector<char>>& grid) {
 拓扑排序也可以通过 BFS 完成。
 */
 bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-	//1建图
-	//2查图
 	return 0;
 }
 
@@ -747,10 +745,52 @@ n 皇后问题研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并
 ]
 解释: 4 皇后问题存在两个不同的解法。
 */
-vector<vector<string>> solveNQueens(int n) {
-	vector<vector<string>> ret;
-	return ret;
-}
+class Q51{
+//执行用时 :28 ms, 在所有 C++ 提交中击败了30.91%的用户
+//内存消耗 :13.8 MB, 在所有 C++ 提交中击败了27.62%的用户
+public:
+	vector<vector<string>> m_ret;
+	int m_n;
+	void addQ(vector<int> &pos) {
+		vector<string> vs;
+		for(int row = 0; row < m_n; row++){
+			string s(m_n, '.');
+			int col = pos[row];
+			s[col] = 'Q';
+			vs.push_back(s);
+		}
+		m_ret.push_back(vs);
+	}
+	void DFS(set<int> &invalid_col, set<int> &invalid_pie, set<int> &invalid_na, vector<int> &pos) {
+		int row = pos.size();
+		if(row == m_n) {
+			addQ(pos);
+			return;
+		}
+		for (int col = 0; col < m_n; col++) {
+			if(invalid_col.find(col) != invalid_col.end()) continue;
+			if(invalid_pie.find(col + row) != invalid_pie.end()) continue;
+			if(invalid_na.find(col - row) != invalid_na.end()) continue;
+
+			invalid_col.insert(col);
+			invalid_pie.insert(col + row);
+			invalid_na.insert(col - row);
+			pos.push_back(col);
+			DFS(invalid_col, invalid_pie, invalid_na, pos);
+			pos.pop_back();
+			invalid_na.erase(invalid_na.find(col - row));
+			invalid_pie.erase(invalid_pie.find(col + row));
+			invalid_col.erase(invalid_col.find(col));
+		}
+	}
+	vector<vector<string>> solveNQueens(int n) {
+		m_n = n;
+		set<int> invalid_col, invalid_pie, invalid_na;
+		vector<int> pos;
+		DFS(invalid_col, invalid_pie, invalid_na, pos);
+		return m_ret;
+	}
+};
 
 /* 52. N皇后 II
 n 皇后问题研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。

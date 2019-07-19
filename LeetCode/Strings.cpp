@@ -1621,7 +1621,7 @@ public:
 void Test::Strings()
 {
 	Solution s;
-	s.restoreIpAddresses("25525511135");
+	s.restoreIpAddresses("12345678");
 }
 
 
