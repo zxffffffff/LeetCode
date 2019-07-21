@@ -29,9 +29,6 @@
     <ClCompile Include="Test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="LinkedList.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="StackAndQueue.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -47,10 +44,13 @@
     <ClCompile Include="DynamicProgramming.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Interview.cpp">
+    <ClCompile Include="Strings.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Strings.cpp">
+    <ClCompile Include="ArrayAndLinkedList.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ForJobInterview.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

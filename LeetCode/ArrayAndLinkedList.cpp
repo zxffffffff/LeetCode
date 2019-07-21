@@ -3,9 +3,6 @@
 
 using namespace std;
 
-/* 数组和链表
-*/
-
 
 // LeetCode 链表节点
 
