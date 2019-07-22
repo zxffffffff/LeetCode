@@ -3,7 +3,7 @@
 
 using namespace std;
 
-/* 动态规划
+/* 动态规划遵循一套固定的流程：递归的暴力解法 -> 带备忘录的递归解法 -> 非递归的动态规划解法。
 */
 
 /* 70. 爬楼梯（简单
@@ -29,7 +29,15 @@ using namespace std;
 class Solution70 {
 public:
 	int climbStairs(int n) {
-
+		if (n < 3) return n;
+		vector<int> v;
+		v.resize(n + 1);
+		v[0] = 0;
+		v[1] = 1;
+		for (int i = 2; i <= n; i++) {
+			v[i] = (v[i - 1] + v[i - 2]);
+		}
+		return v[n];
 	}
 };
 
@@ -51,7 +59,36 @@ public:
 class Solution120 {
 public:
 	int minimumTotal(vector<vector<int>>& triangle) {
-
+		/*
+		执行用时 :12 ms, 在所有 C++ 提交中击败了63.95%的用户
+		内存消耗 :9.9 MB, 在所有 C++ 提交中击败了57.63%的用户
+		*/
+		if (triangle.empty()) return 0;
+		vector<vector<int>> v = triangle;
+		int rowSz = v.size();
+		for (int row = rowSz - 2; row >= 0; row--) { // -idx -last
+			for (int col = 0; col < v[row].size(); col++) {
+				v[row][col] += min(v[row + 1][col], v[row + 1][col + 1]);
+			}
+		}
+		return v[0][0];
+	}
+	int minimumTotal2(vector<vector<int>>& triangle) {
+		/*
+		执行用时 :20 ms, 在所有 C++ 提交中击败了13.92%的用户
+		内存消耗 :9.8 MB, 在所有 C++ 提交中击败了78.81%的用户
+		*/
+		if (triangle.empty()) return 0;
+		vector<int> v = triangle[triangle.size() - 1];
+		int rowSz = v.size();
+		for (int row = rowSz - 2; row >= 0; row--) { // -idx -last
+			vector<int> vtmp = triangle[row];
+			for (int col = 0; col < vtmp.size(); col++) {
+				vtmp[col] += min(v[col], v[col + 1]);
+			}
+			v = vtmp;
+		}
+		return v[0];
 	}
 };
 
@@ -71,7 +108,19 @@ public:
 class Solution152 {
 public:
 	int maxProduct(vector<int>& nums) {
+		if (nums.empty()) return 0;
 
+		int imax, imin, ret;
+		imax = imin = ret = nums[0];
+		for (int i = 1; i < nums.size(); i++) {
+			int &n = nums[i];
+			if (n < 0)
+				swap(imax, imin);
+			imax = max(n, n * imax);
+			imin = min(n, n * imin);
+			ret = max(ret, imax);
+		}
+		return ret;
 	}
 };
 
@@ -94,7 +143,15 @@ public:
 class Solution121 {
 public:
 	int maxProfit(vector<int>& prices) {
-
+		//找最小值和最大峰值
+		if (prices.empty()) return 0;
+		int min_price = INT_MAX, max_profit = INT_MIN;
+		for (int i = 1; i < prices.size(); i++) {
+			const int &val = prices[i];
+			min_price = min(min_price, val);
+			max_profit = max(max_profit, val - min_price);
+		}
+		return max_profit;
 	}
 };
 
@@ -124,7 +181,13 @@ public:
 class Solution122 {
 public:
 	int maxProfit(vector<int>& prices) {
-
+		int ret = 0;
+		for (int i = 1; i < prices.size(); i++) {
+			int profit = prices[i] - prices[i - 1];
+			if (profit > 0)
+				ret += profit;
+		}
+		return ret;
 	}
 };
 
@@ -242,12 +305,29 @@ public:
 class Solution300 {
 public:
 	int lengthOfLIS(vector<int>& nums) {
-
+		/*
+		执行用时 :96 ms, 在所有 C++ 提交中击败了19.18%的用户
+		内存消耗 :8.5 MB, 在所有 C++ 提交中击败了71.57%的用户
+		*/
+		int sz = nums.size();
+		if (sz < 2) return sz;
+		vector<int> dp(sz, 1);
+		int imax = 1;
+		for (int i = 1; i < sz; i++) {
+			for (int j = 0; j < i; j++) {
+				if (nums[i] > nums[j]) {
+					dp[i] = max(dp[i], dp[j] + 1); //保存之前的最长
+					imax = max(imax, dp[i]);
+				}
+			}
+		}
+		return imax;
 	}
 };
 
 /* 322. 零钱兑换（中等
-给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。如果没有任何一种硬币组合能组成总金额，返回 -1。
+给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。
+如果没有任何一种硬币组合能组成总金额，返回 -1。
 
 示例 1:
 输入: coins = [1, 2, 5], amount = 11
@@ -263,7 +343,30 @@ public:
 class Solution322 {
 public:
 	int coinChange(vector<int>& coins, int amount) {
+		int imin = INT_MAX;
+		for (auto coin : coins) {
+			if (coin > amount) continue;
+			int sub_min = coinChange(coins, amount - coin);
+			if (sub_min == -1) continue;
+			imin = min(imin, sub_min + 1); // 能写出来这行代码，就可以使用动态规划了
+		}
+		return (imin == INT_MAX ? -1 : imin);
+	}
 
+	int coinChange2(vector<int>& coins, int amount) {
+		/*
+		执行用时 :68 ms, 在所有 C++ 提交中击败了78.13%的用户
+		内存消耗 :12.4 MB, 在所有 C++ 提交中击败了82.03%的用户
+		*/
+		vector<int> dp(amount + 1, INT_MAX);
+		dp[0] = 0;
+		for (int i = 1; i <= amount; i++) {
+			for (auto coin : coins) {
+				if (coin > i) continue;
+				dp[i] = min(dp[i], dp[i - coin] + 1); // 动态规划
+			}
+		}
+		return (dp[amount] == INT_MAX ? -1 : dp[amount]);
 	}
 };
 
