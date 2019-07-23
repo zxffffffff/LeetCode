@@ -978,11 +978,178 @@ bool exist(vector<vector<char>>& board, string word) {
 
 
 
+/* 73. 矩阵置零(Medium
+给定一个 m x n 的矩阵，如果一个元素为 0，则将其所在行和列的所有元素都设为 0。请使用原地算法。
+
+示例 1:
+输入:[
+  [1,1,1],
+  [1,0,1],
+  [1,1,1]
+]
+输出:[
+  [1,0,1],
+  [0,0,0],
+  [1,0,1]
+]
+
+示例 2:
+输入:[
+  [0,1,2,0],
+  [3,4,5,2],
+  [1,3,1,5]
+]
+输出:[
+  [0,0,0,0],
+  [0,4,5,0],
+  [0,3,1,0]
+]
+
+进阶:
+一个直接的解决方案是使用  O(mn) 的额外空间，但这并不是一个好的解决方案。
+一个简单的改进方案是使用 O(m + n) 的额外空间，但这仍然不是最好的解决方案。
+你能想出一个常数空间的解决方案吗？
+*/
+class Solution73 {
+public:
+	void setZeroes(vector<vector<int>>& matrix) {
+		set<int> setRow, setCol;
+		for (int row = 0; row < matrix.size(); row++) {
+			for (int col = 0; col < matrix[row].size(); col++) {
+				if (matrix[row][col] == 0) {
+					setRow.insert(row);
+					setCol.insert(col);
+				}
+			}
+		}
+		for (int row = 0; row < matrix.size(); row++) {
+			bool bRow = (setRow.find(row) != setRow.end());
+			for (int col = 0; col < matrix[row].size(); col++) {
+				if (bRow) {
+					matrix[row][col] = 0;
+					continue;
+				}
+				bool bCol = (setCol.find(col) != setCol.end());
+				if (bCol) {
+					matrix[row][col] = 0;
+				}
+			}
+		}
+	}
+};
+
+/* 905. 按奇偶排序数组(Easy
+给定一个非负整数数组 A，返回一个数组，在该数组中， A 的所有偶数元素之后跟着所有奇数元素。
+你可以返回满足此条件的任何数组作为答案。
+
+示例：
+输入：[3,1,2,4]
+输出：[2,4,3,1]
+输出 [4,2,3,1]，[2,4,1,3] 和 [4,2,1,3] 也会被接受。
+ 
+提示：
+1 <= A.length <= 5000
+0 <= A[i] <= 5000
+*/
+class Solution905 {
+public:
+	vector<int> sortArrayByParity(vector<int>& A) {
+		int sz = A.size();
+		if (sz < 2) return A;
+
+		vector<int> ans(sz, 0);
+		int lo = 0, hi = sz - 1;
+		for (int i = 0; i < sz; i++) {
+			if (A[i] % 2 == 0)
+				ans[lo++] = A[i];
+			else
+				ans[hi--] = A[i];
+		}
+		return ans;
+	}
+};
+
+/* 1019. 链表中的下一个更大节点(mudium
+给出一个以头节点 head 作为第一个节点的链表。链表中的节点分别编号为：node_1, node_2, node_3, ... 。
+
+每个节点都可能有下一个更大值（next larger value）：
+对于 node_i，如果其 next_larger(node_i) 是 node_j.val，那么就有 j > i 且  node_j.val > node_i.val，
+而 j 是可能的选项中最小的那个。如果不存在这样的 j，那么下一个更大值为 0 。
+
+返回整数答案数组 answer，其中 answer[i] = next_larger(node_{i+1}) 。
+
+注意：在下面的示例中，诸如 [2,1,5] 这样的输入（不是输出）是链表的序列化表示，
+其头节点的值为 2，第二个节点值为 1，第三个节点值为 5 。
+
+示例 1：
+输入：[2,1,5]
+输出：[5,5,0]
+
+示例 2：
+输入：[2,7,4,3,5]
+输出：[7,0,5,5,0]
+
+示例 3：
+输入：[1,7,5,1,9,2,5,1]
+输出：[7,9,9,9,0,5,0,0]
+
+提示：
+对于链表中的每个节点，1 <= node.val <= 10^9
+给定列表的长度在 [0, 10000] 范围内
+*/
+class Solution {
+public:
+	/*
+	执行用时 :292 ms, 在所有 C++ 提交中击败了83.66%的用户
+	内存消耗 :25.8 MB, 在所有 C++ 提交中击败了44.86%的用户
+	*/
+	vector<int> nextLargerNodes(ListNode* head) {
+		vector<int> v;
+		for (auto p = head; p != NULL; p = p->next) {
+			v.push_back(p->val);
+		}
+		vector<int> ans(v.size(), 0);
+		stack<int> dic; //维护一个递减的栈，栈底放最大值
+		for (int i = v.size(); i > 0; i--) {
+			int val = v[i - 1];
+			while (!dic.empty()) {
+				if (dic.top() > val) {
+					ans[i - 1] = dic.top();
+					dic.push(val);
+					break;
+				}
+				dic.pop();
+			}
+			if (dic.empty()) {
+				dic.push(val);
+				continue;
+			}
+		}
+		return ans;
+	}
+};
 
 
+/* 462. 最少移动次数使数组元素相等 II（medium
+给定一个非空整数数组，找到使所有数组元素相等所需的最小移动数，其中每次移动可将选定的一个元素加1或减1。
+您可以假设数组的长度最多为10000。
+例如:
 
+输入:
+[1,2,3]
+输出:
+2
 
-
+说明：
+只有两个动作是必要的（记得每一步仅可使其中一个元素加1或减1）：
+[1,2,3]  =>  [2,2,3]  =>  [2,2,2]
+*/
+class Solution462 {
+public:
+	int minMoves2(vector<int>& nums) {
+		//中位数最优解
+	}
+};
 
 
 Test::Test()
