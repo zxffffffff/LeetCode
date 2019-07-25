@@ -891,7 +891,10 @@ void solveSudoku(vector<vector<char>>& board) {
 说明: 8 的平方根是 2.82842...,由于返回类型是整数，小数部分将被舍去。
 */
 int mySqrt(int x) {
-	
+	1e-9;
+	return 0;
+}
+double mySqrtDouble(int x) {
 	return 0;
 }
 
