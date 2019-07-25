@@ -1154,6 +1154,48 @@ public:
 	}
 };
 
+/* 914. 卡牌分组(easy
+给定一副牌，每张牌上都写着一个整数。
+此时，你需要选定一个数字 X，使我们可以将整副牌按下述规则分成 1 组或更多组：
+
+每组都有 X 张牌。
+组内所有的牌上都写着相同的整数。
+仅当你可选的 X >= 2 时返回 true。
+*/
+class Solution914 {
+public:
+	bool hasGroupsSizeX(vector<int>& deck) {
+		if (deck.empty()) return false;
+		map<int, int> mapCount;
+		for (auto val : deck) {
+			if (mapCount.find(val) != mapCount.end())
+				mapCount[val]++;
+			else
+				mapCount[val] = 1;
+		}
+		auto ite = mapCount.begin();
+		int min = ite->second;
+		ite++;
+		for (; ite != mapCount.end(); ite++) {
+			if (ite->second > min) {
+				if (ite->second % min != 0)//错 判断数字个数之间的最大公约数是否为1
+					return false;
+			}
+			else if (ite->second < min) {
+				if (min % ite->second != 0)
+					return false;
+				min = ite->second;
+			}
+		}
+		return (min >= 2);
+	}
+};
+
+
+
+
+
+
 
 Test::Test()
 {
