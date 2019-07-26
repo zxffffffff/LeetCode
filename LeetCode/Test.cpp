@@ -1161,36 +1161,155 @@ public:
 */
 class Solution914 {
 public:
-	bool hasGroupsSizeX(vector<int>& deck) {
+	static bool hasGroupsSizeX(vector<int> deck) {
 		if (deck.empty()) return false;
-		map<int, int> mapCount;
+
+		map<int, int> mapCount; //牌：重复次数
 		for (auto val : deck) {
 			if (mapCount.find(val) != mapCount.end())
 				mapCount[val]++;
 			else
 				mapCount[val] = 1;
 		}
-		auto ite = mapCount.begin();
-		int min = ite->second;
-		ite++;
-		for (; ite != mapCount.end(); ite++) {
-			if (ite->second > min) {
-				if (ite->second % min != 0)//错 判断数字个数之间的最大公约数是否为1
-					return false;
-			}
-			else if (ite->second < min) {
-				if (min % ite->second != 0)
-					return false;
-				min = ite->second;
+		
+		map<int, int> mapCount2; //公约数：重复次数
+		for (auto ite = mapCount.begin(); ite != mapCount.end(); ite++) {
+			int val = ite->second;
+			if (val < 2) return false; // X >= 2
+
+			for (int i = 2; i <= val; i++) {
+				if (val % i == 0) {
+					if (mapCount2.find(i) != mapCount2.end())
+						mapCount2[i]++;
+					else
+						mapCount2[i] = 1;
+				}
 			}
 		}
-		return (min >= 2);
+
+		for (auto ite = mapCount2.begin(); ite != mapCount2.end(); ite++) {
+			if (ite->second == mapCount.size())
+				return true;
+		}
+		return false;
 	}
 };
 
 
+/* 349. 两个数组的交集(easy
+给定两个数组，编写一个函数来计算它们的交集。
+
+示例 1:
+输入: nums1 = [1,2,2,1], nums2 = [2,2]
+输出: [2]
+
+示例 2:
+输入: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+输出: [9,4]
+
+说明:
+输出结果中的每个元素一定是唯一的。
+我们可以不考虑输出结果的顺序。
+*/
+class Solution349 {
+public:
+	vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+		set<int> dic, ans;
+		for (auto n : nums1) {
+			dic.insert(n);
+		}
+		for (auto n : nums2) {
+			if (dic.find(n) != dic.end())
+				ans.insert(n);
+		}
+		vector<int> vans;
+		for (auto n : ans) {
+			vans.push_back(n);
+		}
+		return vans;
+	}
+};
 
 
+/* 63. 不同路径 II(medium
+一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为“Start” ）。
+机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为“Finish”）。
+现在考虑网格中有障碍物。那么从左上角到右下角将会有多少条不同的路径？
+网格中的障碍物和空位置分别用 1 和 0 来表示。
+说明：m 和 n 的值均不超过 100。
+
+示例 1:
+输入:
+[
+  [0,0,0],
+  [0,1,0],
+  [0,0,0]
+]
+输出: 2
+
+解释:
+3x3 网格的正中间有一个障碍物。
+从左上角到右下角一共有 2 条不同的路径：
+1. 向右 -> 向右 -> 向下 -> 向下
+2. 向下 -> 向下 -> 向右 -> 向右
+*/
+class Solution63 {
+public:
+    static int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+        //递归 f(x,y) = f(x+1,y) + f(x,y+1)
+		//动态规划
+		int rowCount = obstacleGrid.size();
+		if (rowCount < 1) return 0;
+		int colCount = obstacleGrid[0].size();
+		if (colCount < 1) return 0;
+		vector<vector<int>> dp(rowCount, vector<int>(colCount, 0));
+		for (int row = rowCount; row > 0; row--) {
+			for (int col = colCount; col > 0; col--) {
+				if (obstacleGrid[row - 1][col - 1] == 1) {
+					//dp[row - 1][col - 1] = 0;
+					continue;
+				}
+				if (row == rowCount && col == colCount) {
+					dp[row - 1][col - 1] = 1;
+					continue;
+				}
+				long long right = 0, down = 0;
+				if (col < colCount) right = dp[row - 1][col];
+				if (row < rowCount) down = dp[row][col - 1];
+				dp[row - 1][col - 1] = right + down;
+			}
+		}
+		return dp[0][0];
+    }
+};
+
+
+/* 283. 移动零(easy
+给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。
+
+示例:
+输入: [0,1,0,3,12]
+输出: [1,3,12,0,0]
+
+说明:
+必须在原数组上操作，不能拷贝额外的数组。
+尽量减少操作次数。
+*/
+class Solution283 {
+public:
+	void moveZeroes(vector<int>& nums) {
+		int idxz = 0;
+		for (int i = 0; i < nums.size(); i++) {
+			if (nums[i] != 0) {
+				nums[idxz++] = nums[i];
+			}
+		}
+
+		for (int i = idxz; i < nums.size(); i++) {
+			nums[i] = 0;
+		}
+	}
+};
 
 
 
@@ -1214,6 +1333,12 @@ Test::Test()
 // 	cout << "665. bool=" << (checkPossibility(nums) ? "true" : "false") << endl;
 
 //	cout << "771. count=" << numJewelsInStones("aA", "aAAbbbb") << endl;
+
+	//Solution914::hasGroupsSizeX(vector<int>({ 1,1,1,2,2,2,3,3 }));
+
+	vector<vector<int>> obstacleGrid(3, vector<int>(3, 0));
+	obstacleGrid[1][1] = 1;
+	Solution63::uniquePathsWithObstacles(obstacleGrid);
 
 	Strings();
 	HashTable();
