@@ -1315,6 +1315,71 @@ public:
 };
 
 
+/* 746. 使用最小花费爬楼梯(easy
+数组的每个索引做为一个阶梯，第 i个阶梯对应着一个非负数的体力花费值 cost[i](索引从0开始)。
+每当你爬上一个阶梯你都要花费对应的体力花费值，然后你可以选择继续爬一个阶梯或者爬两个阶梯。
+您需要找到达到楼层顶部的最低花费。在开始时，你可以选择从索引为 0 或 1 的元素作为初始阶梯。
+
+示例 1:
+输入: cost = [10, 15, 20]
+输出: 15
+解释: 最低花费是从cost[1]开始，然后走两步即可到阶梯顶，一共花费15。
+
+示例 2:
+输入: cost = [1, 100, 1, 1, 1, 100, 1, 1, 100, 1]
+输出: 6
+解释: 最低花费方式是从cost[0]开始，逐个经过那些1，跳过cost[3]，一共花费6。
+
+注意：
+cost 的长度将会在 [2, 1000]。
+每一个 cost[i] 将会是一个Integer类型，范围为 [0, 999]。
+*/
+class Solution746 {
+public:
+	int minCostClimbingStairs(vector<int>& cost) {
+		// dp[i] = min(dp[i - 1], dp[i - 2]) + cost[i]
+		int lo = cost[0], hi = cost[1];
+		for (int i = 2; i < cost.size(); i++) {
+			int next = min(lo, hi) + cost[i];
+			lo = hi;
+			hi = next;
+		}
+		return min(lo, hi);
+	}
+};
+
+/* 507. 完美数(easy
+对于一个 正整数，如果它和除了它自身以外的所有正因子之和相等，我们称它为“完美数”。
+给定一个 正整数 n， 如果他是完美数，返回 True，否则返回 False
+
+示例：
+输入: 28
+输出: True
+解释: 28 = 1 + 2 + 4 + 7 + 14
+ 
+注意:
+输入的数字 n 不会超过 100,000,000. (1e8)
+*/
+class Solution507 {
+public:
+	static bool checkPerfectNumber(int num) {
+		if (num == 1) 
+			return false;
+		const int hi = static_cast<int>(sqrt(num));
+		if (hi * hi != num)
+			return false; //条件不符
+
+		int sum = 1;
+		for (int i = 2; i < hi; i++) {
+			if(num % i != 0)
+				continue;
+			sum += i + num / i;
+		}
+		sum += hi;
+		return sum == num;
+	}
+};
+
 
 Test::Test()
 {
@@ -1339,9 +1404,12 @@ Test::Test()
 
 	//Solution914::hasGroupsSizeX(vector<int>({ 1,1,1,2,2,2,3,3 }));
 
-	vector<vector<int>> obstacleGrid(3, vector<int>(3, 0));
-	obstacleGrid[1][1] = 1;
-	Solution63::uniquePathsWithObstacles(obstacleGrid);
+// 	vector<vector<int>> obstacleGrid(3, vector<int>(3, 0));
+// 	obstacleGrid[1][1] = 1;
+// 	Solution63::uniquePathsWithObstacles(obstacleGrid);
+
+	Solution507::checkPerfectNumber(28);
+
 
 	Strings();
 	HashTable();
